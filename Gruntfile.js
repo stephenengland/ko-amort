@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 			},
 			my_target: {
 				files: {
-					'www/index.min.js': ['src/ko.observableDictionary.js', 'src/index.js']
+					'www/index.min.js': ['src/ko.observableDictionary.js', 'src/*.js']
 				}
 			}
 		},
@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 				separator: ';'
 			},
 			dist: {
-				src: ['src/ko.observableDictionary.js', 'src/index.js'],
+				src: ['src/ko.observableDictionary.js', 'src/*.js'],
 				dest: 'www/index.js'
 			}
 		},
@@ -49,6 +49,7 @@ module.exports = function(grunt) {
 		watch: {
 			scripts: {
 				files: ['src/*.js', 'www/*.html'],
+				tasks: ['concat', 'uglify'],
 				options: {
 					livereload: true
 				}
