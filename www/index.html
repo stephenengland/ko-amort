@@ -73,7 +73,7 @@
 				<div class="form-group col-sm-4">
 					<label for="term">Start Date</label>
 					<div class="input-group date">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" id="startDate">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
 					</div>
 				</div>
@@ -85,34 +85,75 @@
 					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="form-group">
+					<div class="col-sm-2">
+						<label for="extraPaymentButton">Extra Payments</label>
+						<button id="extraPaymentButton" class="btn btn-primary">Add Extra Payment</button>
+					</div>
+					<div class="col-sm-5">
+						<label for="extraPaymentDate">Date of Payment</label>
+						<div class="input-group date">
+							<input type="text" class="form-control" id="extraPaymentDate"></input>
+							<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+						</div>
+					</div>
+					<div class="col-sm-5">
+						<label for="extraPaymentAmount">Extra Payment Amount</label>
+						<div class="input-group">
+							<label class="input-group-addon" for="extraPaymentAmount">$</label>
+							<input type="text" class="form-control" name="extraPaymentAmount" id="extraPaymentAmount"></input>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row padded">
+				<div class="col-xs-12">
+					<ul class="list-group" data-bind="foreach: extraPayments.items">
+						<li class="list-group-item">
+							<span data-bind="text: viewExtraPaymentDate(key)"></span>
+							$<span data-bind="text: value"></span> (Shown in schedule below)
+						</li>
+					<ul>
+				</div>
+			</div>
 		</form>
 		<div class="jumbotron">
 			<h2>
-				Your total monthly payment is $<span data-bind="text: totalMonthlyPayment"></span>
+				Your total monthly payment is $<span data-bind="numericText: totalMonthlyPayment"></span>
 			</h2>
 			<p>
 				<h4>Payment Breakdown:</h4>
 				<ul class="list-group">
-					<li class="list-group-item">Principal and Interest payment <span data-bind="text: monthlyPayment" class="badge"></span></li>
-					<li class="list-group-item">Tax (Escrow) payment <span data-bind="text: taxPayment" class="badge"></span></li>
-					<li class="list-group-item">PMI (Escrow) payment <span data-bind="text: pmiPayment" class="badge"></span></li>
+					<li class="list-group-item">Principal and Interest payment <span data-bind="numericText: monthlyPayment" class="badge"></span></li>
+					<li class="list-group-item">Tax (Escrow) payment <span data-bind="numericText: taxPayment" class="badge"></span></li>
+					<li class="list-group-item">PMI (Escrow) payment <span data-bind="numericText: pmiPayment" class="badge"></span></li>
 				</ul>
+			</p>
+			<p class="lead">
+				At the end of the loan, <span data-bind="text: payoffDate().toLocaleDateString()"></span>, you will have paid $<span data-bind="numericText: totalInterestPaid"></span> in interest.
 			</p>
 		</div>
 		<table class="table table-striped table-responsive">
 			<thead>
 				<tr>
-					<th>Principal Remaining</th>
+					<th>Balance</th>
+					<th>Total Payment</th>
 					<th>Principal Payment</th>
 					<th>Interest Payment</th>
+					<th>Escrow</th>
+					<th>Total Interest to Date</th>
 					<th>Date</th>
 				</tr>
 			</thead>
 			<tbody data-bind="foreach: schedule">
-				<tr data-bind="css: { 'warning': isExtraPayment }">
-					<td><span data-bind="text:principalRemaining"></span></td>
-					<td><span data-bind="text:principalPayment"></span></td>
-					<td><span data-bind="text:interestPayment"></span></td>
+				<tr data-bind="css: { 'warning': isExtraPayment, 'success': twentyPercentEnded }">
+					<td>$<span data-bind="numericText:principalRemaining"></span></td>
+					<td>$<span data-bind="numericText:totalPayment"></span></td>
+					<td>$<span data-bind="numericText:principalPayment"></span></td>
+					<td>$<span data-bind="numericText:interestPayment"></span></td>
+					<td>$<span data-bind="numericText:escrow"></span></td>
+					<td>$<span data-bind="numericText:totalInterestPaid"></span></td>
 					<td><span data-bind="text:date.toLocaleDateString()"></span></td>
 				</tr>
 			</tbody>
