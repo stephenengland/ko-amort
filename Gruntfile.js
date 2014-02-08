@@ -1,6 +1,39 @@
 module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		config: {
+			dev: {
+				options: {
+					variables: {
+						'environment': 'development',
+						'destination': './temp/',
+						'googleAnalyticsId': '',
+					}
+				}
+			},
+			prod: {
+				options: {
+					variables: {
+						'environment': 'production',
+						'destination': './dist/',
+						'googleAnalyticsId': 'UA-34552232-1'
+					}
+				}
+			}
+		},
+		replace: {
+			dist: {
+				options: {
+					variables: {
+						'googleAnalyticsId': '<%= grunt.config.get("googleAnalyticsId") %>'
+					},
+					force: true
+				},
+				files: [
+					{expand: true, flatten: true, src: ['www/index.html'], dest: '<%= grunt.config.get("destination") %>'}
+				]
+			}
+		},
 		jshint: {
 			files: ['**.js'],
 			options: {
@@ -18,7 +51,7 @@ module.exports = function(grunt) {
 			},
 			my_target: {
 				files: {
-					'www/index.min.js': ['src/ko.observableDictionary.js', 'src/ko.moneybinding.js', 'bootstrap-datepicker.js', 'src/*.js']
+					'<%= grunt.config.get("destination") %>/index.min.js': ['src/ko.observableDictionary.js', 'src/ko.moneybinding.js', 'bootstrap-datepicker.js', 'src/*.js']
 				}
 			}
 		},
@@ -28,7 +61,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				src: ['src/ko.observableDictionary.js', 'src/ko.moneybinding.js', 'bootstrap-datepicker.js', 'src/*.js'],
-				dest: 'www/index.js'
+				dest: '<%= grunt.config.get("destination") %>/index.js'
 			}
 		},
 		express: {
@@ -36,7 +69,7 @@ module.exports = function(grunt) {
 				options: {
 					port: 9001,
 					hostname: "127.0.0.0",
-					bases: ['www'],
+					bases: ['<%= grunt.config.get("destination") %>'],
 					livereload: true
 				}
 			}
@@ -49,7 +82,7 @@ module.exports = function(grunt) {
 		watch: {
 			scripts: {
 				files: ['src/*.js', 'www/*.html'],
-				tasks: ['concat', 'uglify'],
+				tasks: ['config:dev', 'concat', 'uglify'],
 				options: {
 					livereload: true
 				}
@@ -57,12 +90,15 @@ module.exports = function(grunt) {
 		}
 	});
 	
+	grunt.loadNpmTasks('grunt-config');
+	grunt.loadNpmTasks('grunt-replace');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-express');
-	grunt.loadNpmTasks('grunt-open');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-open');
 	
-	grunt.registerTask('default', ['jshint', 'uglify', 'concat', 'express', 'open', 'watch']);
+	grunt.registerTask('default', ['config:dev', 'replace', 'jshint', 'uglify', 'concat', 'express', 'open', 'watch']);
+	grunt.registerTask('build', ['config:prod', 'replace', 'jshint', 'uglify', 'concat']);
 };
