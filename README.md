@@ -1,7 +1,9 @@
 ko-amort
 ========
 
-An Amortization Calculator using Knockout
+An Amortization Calculator using Knockout.
+
+View it at: http://theahstudios.com/mortgage-calculator
 
 To Run Locally
 ========
