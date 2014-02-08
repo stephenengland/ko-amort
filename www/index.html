@@ -102,24 +102,22 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="form-group">
-					<div class="col-sm-2">
-						<label for="extraPaymentButton">Extra Payments</label>
-						<button id="extraPaymentButton" class="btn btn-primary">Add Extra Payment</button>
+				<div class="col-sm-2">
+					<label for="extraPaymentButton" class="hidden-xs hidden-sm">Extra Payments</label>
+					<button id="extraPaymentButton" class="btn btn-primary">Add Extra Payment</button>
+				</div>
+				<div class="col-sm-5">
+					<label for="extraPaymentDate">Date of Payment</label>
+					<div class="input-group date">
+						<input type="text" class="form-control" id="extraPaymentDate"></input>
+						<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
 					</div>
-					<div class="col-sm-5">
-						<label for="extraPaymentDate">Date of Payment</label>
-						<div class="input-group date">
-							<input type="text" class="form-control" id="extraPaymentDate"></input>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-						</div>
-					</div>
-					<div class="col-sm-5">
-						<label for="extraPaymentAmount">Extra Payment Amount</label>
-						<div class="input-group">
-							<label class="input-group-addon" for="extraPaymentAmount">$</label>
-							<input type="text" class="form-control" name="extraPaymentAmount" id="extraPaymentAmount"></input>
-						</div>
+				</div>
+				<div class="col-sm-5">
+					<label for="extraPaymentAmount">Extra Payment Amount</label>
+					<div class="input-group">
+						<label class="input-group-addon" for="extraPaymentAmount">$</label>
+						<input type="text" class="form-control" name="extraPaymentAmount" id="extraPaymentAmount"></input>
 					</div>
 				</div>
 			</div>
@@ -141,7 +139,7 @@
 			<p>
 				<h4>Payment Breakdown:</h4>
 				<ul class="list-group">
-					<li class="list-group-item">Principal and Interest payment <span data-bind="numericText: monthlyPayment" class="badge"></span></li>
+					<li class="list-group-item"><span class="hidden-xs hidden-sm">Principal and Interest</span><span class="hidden-md hidden-lg">Main</span> payment <span data-bind="numericText: monthlyPayment" class="badge"></span></li>
 					<li class="list-group-item">Tax (Escrow) payment <span data-bind="numericText: taxPayment" class="badge"></span></li>
 					<li class="list-group-item">PMI (Escrow) payment <span data-bind="numericText: pmiPayment" class="badge"></span></li>
 				</ul>
