@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 			},
 			my_target: {
 				files: {
-					'www/index.min.js': ['src/ko.observableDictionary.js', 'src/*.js']
+					'www/index.min.js': ['src/ko.observableDictionary.js', 'bootstrap-datepicker.js', 'src/*.js']
 				}
 			}
 		},
@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 				separator: ';'
 			},
 			dist: {
-				src: ['src/ko.observableDictionary.js', 'src/*.js'],
+				src: ['src/ko.observableDictionary.js', 'bootstrap-datepicker.js', 'src/*.js'],
 				dest: 'www/index.js'
 			}
 		},

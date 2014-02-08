@@ -17,6 +17,9 @@
 			right: 0; 
 			border: 0;
 		}
+		.padded .form-group {
+			padding-top: 5px;
+		}
 	</style>
 </head>
 
@@ -26,30 +29,75 @@
 	</a>
 	<h1 class="text-center">Amortization Calculator</h1>
 	<div class="container">
-		<div class="row padded">
-			<form role="form" class="form-inline">
+		<form role="form" class="form-inline">
+			<div class="row padded">
 				<div class="form-group col-sm-4">
 					<label for="originalPrincipal">Principal</label>
-					<input type="text" class="form-control" name="originalPrincipal" data-bind="value: originalPrincipal"></input>
+					<div class="input-group">
+						<label class="input-group-addon" for="originalPrincipal">$</label>
+						<input type="text" class="form-control" name="originalPrincipal" id="originalPrincipal" data-bind="value: originalPrincipal"></input>
+					</div>
 				</div>
 				
 				<div class="form-group col-sm-4">
 					<label for="apr">Annual Interest Rate</label>
-					<input type="text" class="form-control" name="apr" data-bind="value: annualInterestRatePercent"></input>
-					<label for="apr">%</label>
+					<div class="input-group">
+						<input type="text" class="form-control" name="apr" id="apr" data-bind="value: annualInterestRatePercent"></input>
+						<label class="input-group-addon" for="apr">%</label>
+					</div>
 				</div>
 				<div class="form-group col-sm-4">
-					<label for="term">Number Of Years</label>
-					<input type="text" class="form-control" name="term" data-bind="value: numberOfYears"></input>
+					<label for="term">Loan Term</label>
+					<div class="input-group">
+						<input type="text" class="form-control" name="term" id="term" data-bind="value: numberOfYears"></input>
+						<label class="input-group-addon" for="term">years</label>
+					</div>
 				</div>
-			</form>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<p class="lead text-center">
-					The monthly payment is <span data-bind="text: monthlyPayment"></span>
-				</p>
 			</div>
+			<div class="row padded">
+				<h3>Extra Information</h3>
+				<div class="form-group col-sm-4">
+					<label for="term">Mortgage Insurance (PMI)</label>
+					<div class="input-group">
+						<input type="text" class="form-control" name="mortgageInsurance" id="mortgageInsurance" data-bind="value: pmiPercent"></input>
+						<label class="input-group-addon" for="mortgageInsurance">%</label>
+					</div>
+				</div>
+				<div class="form-group col-sm-4">
+					<label for="term">Annual Taxes (Escrow)</label>
+					<div class="input-group">
+						<input type="text" class="form-control" name="annualTaxes" id="annualTaxes" data-bind="value: annualTaxPercent"></input>
+						<label class="input-group-addon" for="annualTaxes">%</label>
+					</div>
+				</div>
+				<div class="form-group col-sm-4">
+					<label for="term">Start Date</label>
+					<div class="input-group date">
+						<input type="text" class="form-control">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+					</div>
+				</div>
+				<div class="form-group col-sm-4">
+					<label for="term">Value of Home</label>
+					<div class="input-group">
+						<label class="input-group-addon" for="valueOfHome">$</label>
+						<input type="text" class="form-control" name="valueOfHome" id="valueOfHome" data-bind="value: valueOfHome"></input>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="jumbotron">
+			<h2>
+				Your total monthly payment is $<span data-bind="text: totalMonthlyPayment"></span>
+			</h2>
+			<p>
+				<h4>Payment Breakdown:</h4>
+				<ul class="list-group">
+					<li class="list-group-item">Principal and Interest payment <span data-bind="text: monthlyPayment" class="badge"></span></li>
+					<li class="list-group-item">Tax (Escrow) payment <span data-bind="text: taxPayment" class="badge"></span></li>
+					<li class="list-group-item">PMI (Escrow) payment <span data-bind="text: pmiPayment" class="badge"></span></li>
+				</ul>
+			</p>
 		</div>
 		<table class="table table-striped table-responsive">
 			<thead>
@@ -57,7 +105,7 @@
 					<th>Principal Remaining</th>
 					<th>Principal Payment</th>
 					<th>Interest Payment</th>
-					<th>Month</th>
+					<th>Date</th>
 				</tr>
 			</thead>
 			<tbody data-bind="foreach: schedule">
@@ -65,7 +113,7 @@
 					<td><span data-bind="text:principalRemaining"></span></td>
 					<td><span data-bind="text:principalPayment"></span></td>
 					<td><span data-bind="text:interestPayment"></span></td>
-					<td><span data-bind="text:monthNumber"></span> - <span data-bind="text:date.toLocaleDateString()"></span></td>
+					<td><span data-bind="text:date.toLocaleDateString()"></span></td>
 				</tr>
 			</tbody>
 		</table>

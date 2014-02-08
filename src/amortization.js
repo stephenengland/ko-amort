@@ -1,12 +1,15 @@
 var amortization = function(ko, formulas) {
 	var amort = {
 		"originalPrincipal": ko.observable(209950),
+		"valueOfHome": ko.observable(220000),
 		"annualInterestRatePercent": ko.observable(3.375),
 		"numberOfYears": ko.observable(30),
 		"startDate": ko.observable(new Date(2013, 1, 1)),
 		"schedule": ko.observableArray([]),
 		"extraPayments": new ko.observableDictionary({}),
-		"regenPayments": ko.observable()
+		"regenPayments": ko.observable(),
+		"annualTaxPercent": ko.observable(2.26),
+		"pmiPercent": ko.observable(0.5)
 	};
 
 	amort.annualInterestRate = ko.computed(function() {
@@ -39,7 +42,7 @@ var amortization = function(ko, formulas) {
 			var interestPayment = formulas.getCurrentInterestPayment(currentPrincipal, monthlyInterestRate);
 			var principalPayment = formulas.roundToTwo(monthlyPayment - interestPayment);
 			currentPrincipal = formulas.roundToTwo(currentPrincipal - principalPayment);
-			var newDate = new Date(startDate.getTime());
+			var newDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
 			newDate.setMonth(newDate.getMonth() + (monthNumber - 1));
 			
 			amort.schedule.push({
@@ -68,6 +71,29 @@ var amortization = function(ko, formulas) {
 
 			monthNumber++;
 		}
+	}, amort);
+	
+	amort.annualTaxRate = ko.computed(function() {
+		return amort.annualTaxPercent() / 100.00;
+	}, amort);
+	amort.pmiRate = ko.computed(function() {
+		return amort.pmiPercent() / 100.00;
+	}, amort);
+	
+	amort.pmiPayment = ko.computed(function() {
+		return formulas.roundToTwo(amort.pmiRate() * amort.valueOfHome() / 12.0);
+	}, amort);
+	
+	amort.taxPayment = ko.computed(function() {
+		return formulas.roundToTwo(amort.annualTaxRate() * amort.valueOfHome() / 12.00);
+	}, amort);
+	
+	amort.additionalCost = ko.computed(function() {
+		return formulas.roundToTwo(parseFloat(amort.taxPayment()) + parseFloat(amort.pmiPayment()));
+	}, amort);
+	
+	amort.totalMonthlyPayment = ko.computed(function() {
+		return formulas.roundToTwo(parseFloat(amort.additionalCost()) + parseFloat(amort.monthlyPayment()));
 	}, amort);
 	
 	return amort;
