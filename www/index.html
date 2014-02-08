@@ -2,9 +2,9 @@
 
 <head>
 	<title>Amortization Calculator</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
 	<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js"></script>
-	<script type='text/javascript' src="ko.observableDictionary.js"></script>
 	<script type="text/javascript" src="index.js"></script>
 </head>
 
@@ -18,7 +18,7 @@
 		<br />
 		Number Of Years <input type="text" name="term" data-bind="value: numberOfYears"></input>
 	</form>
-	<table>
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th>Principal Remaining</th>
@@ -33,12 +33,6 @@
 				<td><span data-bind="text:principalPayment"></span></td>
 				<td><span data-bind="text:interestPayment"></span></td>
 				<td><span data-bind="text:monthNumber"></span> - <span data-bind="text:date.toLocaleDateString()"></span></td>
-			</tr>
-			<tr data-bind="visible: extraPayment">
-				<td><span data-bind="text:extraPaymentPrincipal"></span></td>
-				<td><span data-bind="text:extraPayment"></span></td>
-				<td></td>
-				<td></td>
 			</tr>
 		</tbody>
 	</table>

@@ -43,13 +43,13 @@ amortization.monthlyPayment = ko.computed(function() {
 
 amortization.payoffMonths = ko.computed(function() {
 	amortization.schedule.removeAll();
+	var dummy = amortization.regenPayments();
 	
 	var monthlyPayment = amortization.monthlyPayment(),
 		currentPrincipal = amortization.originalPrincipal(),
 		monthlyInterestRate = amortization.monthlyInterestRate(),
 		monthNumber = 1,
-		startDate = amortization.startDate(),
-		dummy = amortization.regenPayments();
+		startDate = amortization.startDate();
 
 	while (currentPrincipal >= 0) {
 		var interestPayment = formulas.getCurrentInterestPayment(currentPrincipal, monthlyInterestRate);
@@ -57,26 +57,30 @@ amortization.payoffMonths = ko.computed(function() {
 		currentPrincipal = roundToTwo(currentPrincipal - principalPayment);
 		var newDate = new Date(startDate.getTime());
 		newDate.setMonth(newDate.getMonth() + (monthNumber - 1));
-		var scheduleItem = {
+		
+		amortization.schedule.push({
 			'principalPayment': principalPayment, 
 			'interestPayment': interestPayment,
 			'principalRemaining': currentPrincipal,
 			'monthNumber': monthNumber,
 			'date': newDate,
-			'extraPayment': false,
-			'extraPaymentPrincipal': 0
-		};
+			'isExtraPayment': false
+		});
 		
 		if (amortization.extraPayments) {
 			var extraPayment = amortization.extraPayments.get(monthNumber)();
 			if (extraPayment) {
-				scheduleItem.extraPayment = extraPayment;
 				currentPrincipal = (currentPrincipal - extraPayment).toFixed(2);
-				scheduleItem.extraPaymentPrincipal = currentPrincipal;
+				amortization.schedule.push({
+					'principalPayment': extraPayment, 
+					'interestPayment': 0.00,
+					'principalRemaining': currentPrincipal,
+					'monthNumber': monthNumber,
+					'date': newDate,
+					'isExtraPayment': true
+				});
 			}
 		}
-		
-		amortization.schedule.push(scheduleItem);
 
 		monthNumber++;
 	}
