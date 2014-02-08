@@ -22,13 +22,18 @@ var formulas = {
 
 var amortization = {
 	"originalPrincipal": ko.observable(209950),
-	"annualInterestRate": ko.observable(0.03375),
+	"annualInterestRatePercent": ko.observable(3.375),
 	"numberOfYears": ko.observable(30),
 	"startDate": ko.observable(new Date(2013, 1, 1)),
 	"schedule": ko.observableArray([]),
 	"extraPayments": new ko.observableDictionary({}),
 	"regenPayments": ko.observable()
 };
+
+amortization.annualInterestRate = ko.computed(function() {
+	return (amortization.annualInterestRatePercent() / 100);
+}, amortization);
+
 amortization.monthlyInterestRate = ko.computed(function() {
 	return formulas.getMonthlyInterestRate(amortization.annualInterestRate());
 }, amortization);
