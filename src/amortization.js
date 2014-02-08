@@ -31,12 +31,13 @@ var amortization = function(ko, formulas) {
 	}, amort);
 	
 	amort.hasTwentyPercentPrincipal = function (currentPrincipal) {
-		return (amort.originalPrincipal() * 0.80) > currentPrincipal;
+		return (amort.valueOfHome() * 0.80) > currentPrincipal;
 	};
 	
 	amort.annualTaxRate = ko.computed(function() {
 		return amort.annualTaxPercent() / 100.00;
 	}, amort);
+	
 	amort.pmiRate = ko.computed(function() {
 		return amort.pmiPercent() / 100.00;
 	}, amort);
