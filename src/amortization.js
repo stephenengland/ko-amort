@@ -96,6 +96,9 @@ var amortization = function(ko, formulas) {
 			}
 			else {
 				totalPayment = amort.totalMonthlyPayment();
+				if (hasTwentyPercent) {
+					totalPayment = formulas.roundToTwo(parseFloat(totalPayment) - parseFloat(amort.pmiPayment()));
+				}
 			}
 			
 			amort.schedule.push({
