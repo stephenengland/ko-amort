@@ -20,6 +20,9 @@
 		.padded .form-group {
 			padding-top: 5px;
 		}
+		#extraPaymentButton {
+			margin-top:22px;
+		}
 	</style>
 	<script type="text/javascript">
 		var googleAnalyticsId = '@@googleAnalyticsId';
@@ -102,10 +105,6 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-2">
-					<label for="extraPaymentButton" class="hidden-xs hidden-sm">Extra Payments</label>
-					<button id="extraPaymentButton" class="btn btn-primary">Add Extra Payment</button>
-				</div>
 				<div class="col-sm-5">
 					<label for="extraPaymentDate">Date of Payment</label>
 					<div class="input-group date">
@@ -119,6 +118,9 @@
 						<label class="input-group-addon" for="extraPaymentAmount">$</label>
 						<input type="text" class="form-control" name="extraPaymentAmount" id="extraPaymentAmount"></input>
 					</div>
+				</div>
+				<div class="col-sm-2">
+					<button id="extraPaymentButton" class="btn btn-primary">Add Extra Payment</button>
 				</div>
 			</div>
 			<div class="row padded">
