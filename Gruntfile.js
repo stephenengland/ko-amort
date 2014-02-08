@@ -51,7 +51,7 @@ module.exports = function(grunt) {
 			},
 			my_target: {
 				files: {
-					'<%= grunt.config.get("destination") %>/index.min.js': ['src/ko.observableDictionary.js', 'src/ko.moneybinding.js', 'bootstrap-datepicker.js', 'src/*.js']
+					'<%= grunt.config.get("destination") %>/amort.min.js': ['src/ko.observableDictionary.js', 'src/ko.moneybinding.js', 'bootstrap-datepicker.js', 'src/*.js']
 				}
 			}
 		},
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				src: ['src/ko.observableDictionary.js', 'src/ko.moneybinding.js', 'bootstrap-datepicker.js', 'src/*.js'],
-				dest: '<%= grunt.config.get("destination") %>/index.js'
+				dest: '<%= grunt.config.get("destination") %>/amort.js'
 			}
 		},
 		express: {
