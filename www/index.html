@@ -103,6 +103,13 @@
 						<input type="text" class="form-control" name="valueOfHome" id="valueOfHome" data-bind="value: valueOfHome"></input>
 					</div>
 				</div>
+				<div class="form-group col-sm-4">
+					<label for="insurance">Annual Home Owner's Insurance</label>
+					<div class="input-group">
+						<label class="input-group-addon" for="insurance">$</label>
+						<input type="text" class="form-control" name="insurance" id="insurance" data-bind="value: insurance"></input>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-5">
@@ -144,6 +151,7 @@
 					<li class="list-group-item"><span class="hidden-xs hidden-sm">Principal and Interest</span><span class="hidden-md hidden-lg">Main</span> payment <span data-bind="numericText: monthlyPayment" class="badge"></span></li>
 					<li class="list-group-item">Tax (Escrow) payment <span data-bind="numericText: taxPayment" class="badge"></span></li>
 					<li class="list-group-item">PMI (Escrow) payment <span data-bind="numericText: pmiPayment" class="badge"></span></li>
+					<li class="list-group-item">Insurance (Escrow) payment <span data-bind="numericText: insurancePayment" class="badge"></span></li>
 				</ul>
 			</p>
 			<p class="lead">

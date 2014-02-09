@@ -11,7 +11,8 @@ var amortization = function(ko, formulas) {
 		"regenPayments": ko.observable(),
 		"annualTaxPercent": ko.observable(2.26),
 		"pmiPercent": ko.observable(0.5),
-		"totalInterestPaid": ko.observable(0)
+		"totalInterestPaid": ko.observable(0),
+		"insurance": ko.observable(630)
 	};
 
 	amort.annualInterestRate = ko.computed(function() {
@@ -50,8 +51,12 @@ var amortization = function(ko, formulas) {
 		return formulas.roundToTwo(amort.annualTaxRate() * amort.valueOfHome() / 12.00);
 	}, amort);
 	
+	amort.insurancePayment = ko.computed(function() {
+		return formulas.roundToTwo(amort.insurance() / 12.00);
+	}, amort);
+	
 	amort.additionalCost = ko.computed(function() {
-		return formulas.roundToTwo(parseFloat(amort.taxPayment()) + parseFloat(amort.pmiPayment()));
+		return formulas.roundToTwo(parseFloat(amort.taxPayment()) + parseFloat(amort.pmiPayment()) + parseFloat(amort.insurancePayment()));
 	}, amort);
 	
 	amort.totalMonthlyPayment = ko.computed(function() {
@@ -87,19 +92,18 @@ var amortization = function(ko, formulas) {
 				}
 			}
 			
-			var escrow = hasTwentyPercent ? amort.taxPayment() : amort.additionalCost(),
+			var escrow = amort.additionalCost(),
 				principalComplete = currentPrincipal <= 0,
-				totalPayment;
+				totalPayment = amort.totalMonthlyPayment();
+				
+			if (hasTwentyPercent) {
+				escrow = formulas.roundToTwo(parseFloat(escrow) - parseFloat(amort.pmiPayment()));
+				totalPayment = formulas.roundToTwo(parseFloat(totalPayment) - parseFloat(amort.pmiPayment()));
+			}
 			
 			if (principalComplete) {
 				principalPayment = formulas.roundToTwo(parseFloat(principalPayment) + parseFloat(currentPrincipal));
 				totalPayment = formulas.roundToTwo(parseFloat(principalPayment) + parseFloat(interestPayment) + parseFloat(escrow));
-			}
-			else {
-				totalPayment = amort.totalMonthlyPayment();
-				if (hasTwentyPercent) {
-					totalPayment = formulas.roundToTwo(parseFloat(totalPayment) - parseFloat(amort.pmiPayment()));
-				}
 			}
 			
 			amort.schedule.push({
