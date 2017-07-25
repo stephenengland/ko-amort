@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/koamort
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Docker Build
+          command: docker build -t="koamort" .
+      - run:
+          name: Add aws cli dependencies
+          command: |
+            apk add --update python python-dev py-pip build-base libffi-dev openssl-dev
+      - run:
+          name: Add aws cli
+          command: |
+            pip install awscli
+      - deploy:
+          name: Push application Docker image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              login="$(aws ecr get-login --region us-east-1)"
+              ${login}
+              docker tag koamort "${ECR_ENDPOINT}/koamort:${CIRCLE_SHA1}"
+              docker push "${ECR_ENDPOINT}/koamort:${CIRCLE_SHA1}"
+              docker tag koamort "${ECR_ENDPOINT}/koamort:latest"
+              docker push "${ECR_ENDPOINT}/koamort:latest"
+              aws lambda invoke  --region us-east-1 --function-name deploy-koamort deploy_output.txt
+              cat deploy_output.txt
+            fi
