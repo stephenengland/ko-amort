@@ -16,7 +16,7 @@ jobs:
           command: mkdir -p ~/koamort/dist
       - run:
           name: Copy files from docker image
-          command: docker run -it koamort tar -c -C /usr/share/nginx/html/ . | tar -x -C ~/koamort/dist/
+          command: docker run koamort tar -c -C /usr/share/nginx/html/ . | tar -x -C ~/koamort/dist/
       - run:
           name: Add aws cli dependencies
           command: |
