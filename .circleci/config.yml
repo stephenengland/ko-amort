@@ -12,6 +12,9 @@ jobs:
           name: Docker Build
           command: docker build -t="koamort" .
       - run:
+          name: Make dist folder
+          command: mkdir -p ~/koamort/dist
+      - run:
           name: Copy files from docker image
           command: docker run koamort tar -c -C /usr/share/nginx/html/ | tar x -C ~/koamort/dist
       - run:
